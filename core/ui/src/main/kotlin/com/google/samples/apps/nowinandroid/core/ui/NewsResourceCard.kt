@@ -32,6 +32,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -70,6 +71,7 @@ import com.google.samples.apps.nowinandroid.core.model.data.UserNewsResource
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toJavaZoneId
+import java.text.NumberFormat
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
@@ -133,6 +135,18 @@ fun NewsResourceCardExpanded(
                     Spacer(modifier = Modifier.height(14.dp))
                     NewsResourceShortDescription(userNewsResource.content)
                     Spacer(modifier = Modifier.height(12.dp))
+                    var isChecked by remember {
+                        mutableStateOf(false)
+                    }
+                    Column(
+                        modifier = Modifier
+                    ) {
+                        val formatter = NumberFormat.getInstance(Locale.CHINESE)
+                        Checkbox(checked = isChecked, onCheckedChange = {
+                            isChecked = it
+                        })
+                        ContactModule(formatter = formatter)
+                    }
                     NewsResourceTopics(
                         topics = userNewsResource.followableTopics,
                         onTopicClick = onTopicClick,
@@ -140,6 +154,14 @@ fun NewsResourceCardExpanded(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun ContactModule(formatter: NumberFormat) {
+    Column {
+        Text(text = formatter.toString())
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }
 
